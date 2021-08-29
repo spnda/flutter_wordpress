@@ -450,6 +450,16 @@ class WordPress {
     }
   }
 
+  /// Fetches a single page with [id].
+  Future<Page> fetchPage(int id) async {
+    final uri = Uri.parse(_baseUrl + URL_PAGES + '/$id');
+    final response = await http.get(uri, headers: _urlHeader);
+    if (response.statusCode >= 200 && response.statusCode < 300) {
+      return Page.fromJson(json.decode(response.body));
+    }
+    throw WordPressError(message: response.body);
+  }
+
   /// This returns an object FetchUsersResult based on the filter parameters
   /// specified through [ParamsUserList] object. By default it returns only
   /// [ParamsUserList.perPage] number of users in page [ParamsUserList.pageNum].
